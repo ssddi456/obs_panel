@@ -1,0 +1,40 @@
+{
+  "name": "obs_panel",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": ">=20.1.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start-server": "ts-node ./src/server/index.ts",
+    "build-server": "rspack build -c ./rspack.config.server.js",
+    "start-client": "rspack dev -c ./rspack.config.dev.js",
+    "build-client": "rspack build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^5.4.6",
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.1",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {    
+    "@rspack/cli": "^0.1.9",
+    "@types/lodash": "^4.14.194",
+    "@types/react": "^18.2.5",
+    "@types/react-dom": "^18.2.4",
+    "@types/uuid": "^9.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "webpack": "^5.82.0",
+    "postject": "latest"
+  }
+}
