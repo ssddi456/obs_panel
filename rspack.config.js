@@ -7,7 +7,7 @@ const config = {
     },
     output: {
         path: './dist',
-        // publicPath: '/public/'
+        publicPath: '/public/'
     },
     externals: {
         'buffer': 'commonjs buffer',

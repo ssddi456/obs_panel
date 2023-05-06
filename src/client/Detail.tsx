@@ -24,7 +24,10 @@ export const Detail = () => {
     const listStyle: React.CSSProperties = {
         fontWeight: 'bolder',
         fontSize: 16,
+        lineHeight: 1,
     };
+    const winningColor = '#73ef05';
+    const losingColor = '#ff4352';
 
     // 按分数增加颜色
     const wrapppedColumns = rounds_columns<GameRound>({})
@@ -32,19 +35,27 @@ export const Detail = () => {
         return !x.adminOnly;
     })
     .map((column) => {
-        if (column.noColor) {
-            return column;
-        }
+
         const originalRender = column.render || ((text, record, index) => text);
         column.render = (text, record, index) => {
-            const originalText = originalRender(text, record, index);
-            if (Number(record.score) > 0) {
-                return <span style={{ color: '#cf1322', ...listStyle  }}>{originalText}</span>;
+            let children = originalRender(text, record, index);
+            children = children?.children || children;
+            if (!column.noColor) {
+                if (Number(record.score) > 0) {
+                    children = <span style={{ color: winningColor, ...listStyle }}>{children}</span>;
+                }
+                if (Number(record.score) < 0) {
+                    children = <span style={{ color: losingColor, ...listStyle }}>{children}</span>;
+                }
             }
-            if (Number(record.score) < 0) {
-                return <span style={{ color: '#3f8600', ...listStyle }}>{originalText}</span>;
-            }
-            return originalText;
+            return {
+                props: {
+                    style: {
+                        padding: '6px 0px'
+                    },
+                },
+                children,
+            };
         };
         return column;
     });
@@ -55,7 +66,7 @@ export const Detail = () => {
     const ifDown = delta < 0;
     const currentStyle = {
         valueStyle: {
-            color: ifUp ? '#3f8600' : ifDown ? '#cf1322' : undefined,
+            color: ifUp ? winningColor : ifDown ? losingColor : undefined,
         },
         prefix: ifUp ? <ArrowUpOutlined /> : ifDown ? <ArrowDownOutlined /> : null,
         suffix: (ifUp || ifDown) ? `(${delta})` : null,
@@ -85,11 +96,16 @@ export const Detail = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Card>
+                <Card
+                    bodyStyle={{
+                        padding: 4,
+                    }}
+                >
                     <Table
                         columns={wrapppedColumns}
                         dataSource={filtered_rounds}
                         pagination={false}
+                        showHeader={false}
                     />
                 </Card>
             </Space>

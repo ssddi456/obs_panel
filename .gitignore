@@ -1,3 +1,5 @@
 node_modules
 dist
 *.blob
+data/data.json
+obs_panel.zip

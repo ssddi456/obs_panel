@@ -25,9 +25,16 @@ export const rounds_columns: <T>(data: {
                 align: 'right',
                 noColor: true,
                 render: (text, record, index) => {
-                    return <span>
-                        {index + 1}
-                    </span>
+                    return {
+                        props: {
+                            style: { verticalAlign: 'baseline' },
+                        },
+                        children: (
+                            <span>
+                                {index + 1}
+                            </span>
+                        )
+                    }
                 }
             },
             {
@@ -68,18 +75,24 @@ export const rounds_columns: <T>(data: {
                 key: 'operation',
                 width: '6em',
                 render: (text, record, index) => {
-                    return (
-                        <Button
-                            size='small'
-                            onClick={() => {
-                                remove?.((record as FormListFieldData).name);
-                            }}
-                        >
-                            <DeleteOutlined />
-                        </Button>
-                    )
+                    return {
+                        props: {
+                            style: { verticalAlign: 'baseline' },
+                        },
+                        children: (
+                            <Button
+                                title='删除'
+                                danger
+                                onClick={() => {
+                                    remove?.((record as FormListFieldData).name);
+                                }}
+                            >
+                                <DeleteOutlined />
+                            </Button>
+                        )
+                    };
                 }
-            }
+            },
         ];
 
 // the admin page
@@ -189,6 +202,7 @@ export const Admin = () => {
                                         columns={wrappedEdtableColumns}
                                         dataSource={fields}
                                         pagination={false}
+                                        scroll={{ x: 'max-content', y: 560 }}
                                     />
                                 </Card>
                             );

@@ -34,13 +34,6 @@ const config = {
         hot: true,
         historyApiFallback: true,
     },
-    builtins: {
-        html: [{
-            template: './src/client/templates/index.ejs',
-            filename: 'index.html',
-            chunks: ['main'],
-        }]
-    }
 };
 
 module.exports = config;

@@ -16,8 +16,20 @@ const io = new Server(httpServer, {
 });
 
 const PORT = process.env.PORT || 5000;
-const dist_dir =  path.join(__dirname, '../../dist');
-const data_dir = path.join(__dirname, '../../data');
+const fileName = path.basename(__filename);
+const is_packaged = fileName == 'obs_panel' || fileName == 'obs_panel.exe';
+const dist_dir = is_packaged ? __dirname : path.join(__dirname, '../../dist');
+const data_dir = is_packaged ? path.join(__dirname, 'data') : path.join(__dirname, '../../data');
+
+console.log('fileName', fileName);
+console.log('is_packaged', is_packaged);
+console.log('dist_dir', dist_dir);
+console.log('data_dir', data_dir);
+
+if (!fs.existsSync(data_dir)) {
+    fs.mkdirSync(data_dir);
+}
+
 app.use('/public', express.static(dist_dir));
 const templatePath = path.join(dist_dir, 'index.html');
 
