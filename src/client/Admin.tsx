@@ -1,13 +1,13 @@
 // admin can edit the game session, update scores, add and edit rounds and so on
 // connect backend use websockets
 import * as React from 'react';
-import { GameSession, GameRound } from '../types';
 import { useDetail } from './sock';
-import { Button, Card, Cascader, Collapse, Form, FormListFieldData, Input, Space, Spin, Table } from 'antd';
+import { Button, Card, Collapse, Form, FormListFieldData, Input, Space, Spin, Table, Tooltip } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { v4 as uuid } from 'uuid';
 import Paragraph from 'antd/es/typography/Paragraph';
+import { ColorPicker } from './components/colorPicker';
 
 export const rounds_columns: <T>(data: {
     remove?: (index: number) => void,
@@ -15,6 +15,7 @@ export const rounds_columns: <T>(data: {
     editable?: boolean,
     adminOnly?: boolean,
     noColor?: boolean,
+    tooltip?: string,
 } & ColumnType<T>)[] = ({
     remove
 }) => [
@@ -45,6 +46,7 @@ export const rounds_columns: <T>(data: {
                 width: '6em',
                 align: 'center',
                 editable: true,
+                tooltip: '1/2/3/4/5号位',
             },
             {
                 title: '英雄',
@@ -99,9 +101,7 @@ export const rounds_columns: <T>(data: {
 // the admin page
 export const Admin = () => {
 
-    const [loading, detail, setDetail] = useDetail();
-
-
+    const [loading, detail, setDetail, store] = useDetail();
 
     if (loading) {
         return <Spin spinning={loading} />;
@@ -121,7 +121,7 @@ export const Admin = () => {
                 initialValues={detail}
                 onValuesChange={(field, fields) => {
                     console.log(fields);
-                    setDetail(fields as GameSession);
+                    setDetail(fields);
                 }}
                 onFieldsChange={(fields, allFields) => {
                     console.log('fields, allFields', fields, allFields);
@@ -143,7 +143,7 @@ export const Admin = () => {
                         >
                             详情页面链接: <a href="http://localhost:5000/detail" target='_blank'>http://localhost:5000/detail</a>
                         </Paragraph>
-                        <Paragraph copyable={{ text: '310' }}>宽度: 310</Paragraph>
+                        <Paragraph copyable={{ text: '340' }}>宽度: 340</Paragraph>
                         高度: 看着调吧
                     </Collapse.Panel >
                 </Collapse>
@@ -156,7 +156,6 @@ export const Admin = () => {
 
                         <Form.Item
                             label="起始分数"
-                            initialValue={detail.startScore}
                             name={['startScore']}
                             getValueFromEvent={(e) => {
                                 const v = e.target.value;
@@ -167,7 +166,6 @@ export const Admin = () => {
                         </Form.Item>
                         <Form.Item
                             label="当前分数"
-                            initialValue={detail.currentScore}
                             name={['currentScore']}
                             getValueFromEvent={(e) => {
                                 const v = e.target.value;
@@ -176,6 +174,13 @@ export const Admin = () => {
                         >
                             <Input />
                         </Form.Item>
+                        <Form.Item
+                            label="背景色"
+                            name={['background']}
+                        >
+                            <ColorPicker />
+                        </Form.Item>
+
                     </Card>
 
                     <Form.List
@@ -189,7 +194,7 @@ export const Admin = () => {
                                 if (column.editable) {
                                     column.render = (text, record, index) => {
                                         const fieldName = [index, column.dataIndex as string];
-                                        return (
+                                        const inner = (
                                             <Form.Item
                                                 name={fieldName}
                                                 labelCol={{ span: 0 }}
@@ -197,6 +202,14 @@ export const Admin = () => {
                                             >
                                                 <Input />
                                             </Form.Item>
+                                        );
+                                        return (column.tooltip
+                                            ? (
+                                                <Tooltip title={column.tooltip}>
+                                                    {inner}
+                                                </Tooltip>
+                                            )
+                                            : inner
                                         );
                                     }
                                 }

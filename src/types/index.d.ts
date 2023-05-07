@@ -5,6 +5,11 @@ export interface GameSession {
     rounds: GameRound[];
 }
 
+export interface GameSessionConfig {
+    background?: { r: number, g: number, b: number, a: number };
+    autoCalc: boolean;
+}
+
 export interface GameRound {
     index: number;
     hero: string;
