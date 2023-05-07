@@ -3,10 +3,11 @@
 import * as React from 'react';
 import { GameSession, GameRound } from '../types';
 import { useDetail } from './sock';
-import { Button, Card, Form, FormListFieldData, Input, Space, Spin, Table } from 'antd';
+import { Button, Card, Cascader, Collapse, Form, FormListFieldData, Input, Space, Spin, Table } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { v4 as uuid } from 'uuid';
+import Paragraph from 'antd/es/typography/Paragraph';
 
 export const rounds_columns: <T>(data: {
     remove?: (index: number) => void,
@@ -49,8 +50,8 @@ export const rounds_columns: <T>(data: {
                 title: '英雄',
                 dataIndex: 'hero',
                 key: 'hero',
-                width: '8em',
-                align: 'center',
+                width: '12em',
+                align: 'left',
                 editable: true,
             },
             // {
@@ -109,6 +110,7 @@ export const Admin = () => {
     // the controll panel
     return (
         <Spin spinning={loading}>
+
             <Form
                 labelCol={{
                     span: 8,
@@ -125,6 +127,26 @@ export const Admin = () => {
                     console.log('fields, allFields', fields, allFields);
                 }}
             >
+                <Collapse style={{ backgroundColor: 'black' }}>
+                    <Collapse.Panel header="使用方法" key="1">
+                        <Button
+                            href="https://www.bilibili.com/video/av939981400"
+                            target='_blank'
+                        >
+                            &gt;&gt;&gt;&gt; obs配置方法参考 &lt;&lt;&lt;&lt;
+                        </Button>
+                        <br />
+                        <Paragraph
+                            copyable={{
+                                text: 'http://localhost:5000/detail'
+                            }}
+                        >
+                            详情页面链接: <a href="http://localhost:5000/detail" target='_blank'>http://localhost:5000/detail</a>
+                        </Paragraph>
+                        <Paragraph copyable={{ text: '310' }}>宽度: 310</Paragraph>
+                        高度: 看着调吧
+                    </Collapse.Panel >
+                </Collapse>
                 <Space
                     direction="vertical"
                 >
@@ -202,7 +224,7 @@ export const Admin = () => {
                                         columns={wrappedEdtableColumns}
                                         dataSource={fields}
                                         pagination={false}
-                                        scroll={{ x: 'max-content', y: 560 }}
+                                        scroll={{ y: 560 }}
                                     />
                                 </Card>
                             );

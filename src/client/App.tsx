@@ -15,8 +15,9 @@ export const App = () => (
     }}>
         <BrowserRouter>
             <Routes>
-                <Route path="/admin" Component={Admin} />
                 <Route path="/detail" Component={Detail} />
+                <Route path="/admin" Component={Admin} />
+                <Route path="/" Component={Admin} />
             </Routes>
         </BrowserRouter>
     </ConfigProvider>

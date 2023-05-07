@@ -6,6 +6,7 @@ import { Server, Socket } from 'socket.io';
 import path from 'path';
 import fs from 'fs';
 import { GameSession } from '../types';
+import open from 'open';
 
 const app = express();
 const httpServer = createServer(app);
@@ -85,4 +86,5 @@ io.on('connection', (socket: Socket) => {
 
 httpServer.listen(PORT, () => {
     console.log(`listening on *:${PORT}`);
+    open(`http://localhost:${PORT}`);
 });
