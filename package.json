@@ -10,7 +10,9 @@
     "start-server": "ts-node ./src/server/index.ts",
     "build-server": "rspack build -c ./rspack.config.server.js",
     "start-client": "rspack dev -c ./rspack.config.dev.js",
-    "build-client": "rspack build"
+    "build-client": "rspack build",
+    "pack-win": "powershell -ExecutionPolicy Bypass -File pack.ps1",
+    "pack-mac": "sh pack.sh"
   },
   "author": "",
   "license": "ISC",
